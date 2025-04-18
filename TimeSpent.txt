@@ -1,3 +1,5 @@
-07.04. - 0.5h Angabe + git repo
-09.04. - 0.5h Angabe + planning
-10.04. - 2h Models
+07.04.  - 0.5h Angabe + git repo
+09.04.  - 0.5h Angabe + planning
+10.04.  - 2h Models
+	- 1h Server demo angeschaut
+18.04.	- 0.5h StreamTracer + Server 1st iteration
