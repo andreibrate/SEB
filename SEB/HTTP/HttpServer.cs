@@ -11,67 +11,42 @@ namespace SEB.HTTP
 {
     internal class HttpServer
     {
+        private IPAddress ip = IPAddress.Loopback; // localhost
         private int port = 10001;
+        private TcpListener httpServer;
 
-        private TcpListener tcpListener;
+        public HttpServer()
+        {
+            this.httpServer = new TcpListener(ip, port);
+        }
+
+        public HttpServer(IPAddress ip, int port)
+        {
+            this.ip = ip;
+            this.port = port;
+            this.httpServer = new TcpListener(ip, port);
+        }
 
         public void Run()
         {
-            Console.WriteLine("Our first simple HTTP-Server: http://localhost:10001/");
-
             // ===== I. Start the HTTP-Server =====
-            var httpServer = new TcpListener(IPAddress.Loopback, 10001);
             httpServer.Start();
+            Console.WriteLine($"HTTP server started on {ip}:{port}");
 
             while (true)
             {
                 // ----- 0. Accept the TCP-Client and create the reader and writer -----
                 var clientSocket = httpServer.AcceptTcpClient();
+                //var httpProcessor = new HttpProcessor(this, clientSocket);
+                // ThreadPool for multiple threads
+                //ThreadPool.QueueUserWorkItem(o => httpProcessor.Process());
                 using var writer = new StreamWriter(clientSocket.GetStream()) { AutoFlush = true };
                 using var reader = new StreamReader(clientSocket.GetStream());
 
                 // ----- 1. Read the HTTP-Request -----
                 string? line;
 
-                // 1.1 first line in HTTP contains the method, path and HTTP version
-                line = reader.ReadLine();
-                if (line != null)
-                    Console.WriteLine(line);
-
-                // 1.2 read the HTTP-headers (in HTTP after the first line, until the empy line)
-                int content_length = 0; // we need the content_length later, to be able to read the HTTP-content
-                while ((line = reader.ReadLine()) != null)
-                {
-                    Console.WriteLine(line);
-                    if (line == "")
-                    {
-                        break;  // empty line indicates the end of the HTTP-headers
-                    }
-
-                    // Parse the header
-                    var parts = line.Split(':');
-                    if (parts.Length == 2 && parts[0] == "Content-Length")
-                    {
-                        content_length = int.Parse(parts[1].Trim());
-                    }
-                }
-
-                // 1.3 read the body if existing
-                if (content_length > 0)
-                {
-                    var data = new StringBuilder(200);
-                    char[] chars = new char[1024];
-                    int bytesReadTotal = 0;
-                    while (bytesReadTotal < content_length)
-                    {
-                        var bytesRead = reader.Read(chars, 0, chars.Length);
-                        bytesReadTotal += bytesRead;
-                        if (bytesRead == 0)
-                            break;
-                        data.Append(chars, 0, bytesRead);
-                    }
-                    Console.WriteLine(data.ToString());
-                }
+                
 
                 // ----- 2. Do the processing -----
                 // .... 
@@ -87,6 +62,8 @@ namespace SEB.HTTP
                 writerAlsoToConsole.WriteLine("<html><body><h1>Hello World!</h1></body></html>");    // the HTTP-content (here we just return a minimalistic HTML Hello-World)
 
                 Console.WriteLine("========================================");
+
+                Thread.Sleep(100); // reduce CPU load
             }
         }
     }
