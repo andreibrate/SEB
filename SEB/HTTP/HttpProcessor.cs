@@ -26,8 +26,39 @@ namespace SEB.HTTP
 
             // ----- 2. Do the processing -----
             using var writer = new StreamWriter(clientSocket.GetStream()) { AutoFlush = true };
-            // TBI:
-            // var response = new HttpResponse(writer);
+            var response = new HttpResponse(writer);
+
+            // endpoints - TBI
+
+            // if (request.Method == "GET")
+            // {
+            //     response.ResponseCode = 200;
+            //     response.ResponseMessage = "OK";
+            //     response.Headers["Content-Type"] = "text/html";
+            //     response.Body = "<html><body><h1>Hello World!</h1></body></html>";
+            // }
+            // else if (request.Method == "POST")
+            // {
+            //     response.ResponseCode = 200;
+            //     response.ResponseMessage = "OK";
+            //     response.Headers["Content-Type"] = "text/plain";
+            //     response.Body = "POST request received!";
+            // }
+            // else
+            // {
+            //     response.ResponseCode = 405;
+            //     response.ResponseMessage = "Method Not Allowed";
+            //     response.Headers["Content-Type"] = "text/plain";
+            //     response.Body = "Method Not Allowed";
+            // }
+
+
+
+            Console.WriteLine("----------------------------------------");
+            // ----- 3. Write the HTTP-Response -----
+            response.SendResponse();
+
+            Console.WriteLine("========================================");
         }
     }
 }

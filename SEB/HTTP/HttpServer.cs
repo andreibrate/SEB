@@ -37,31 +37,9 @@ namespace SEB.HTTP
             {
                 // ----- 0. Accept the TCP-Client and create the reader and writer -----
                 var clientSocket = httpServer.AcceptTcpClient();
-                //var httpProcessor = new HttpProcessor(this, clientSocket);
+                var httpProcessor = new HttpProcessor(this, clientSocket);
                 // ThreadPool for multiple threads
-                //ThreadPool.QueueUserWorkItem(o => httpProcessor.Process());
-                using var writer = new StreamWriter(clientSocket.GetStream()) { AutoFlush = true };
-                using var reader = new StreamReader(clientSocket.GetStream());
-
-                // ----- 1. Read the HTTP-Request -----
-                string? line;
-
-                
-
-                // ----- 2. Do the processing -----
-                // .... 
-
-                Console.WriteLine("----------------------------------------");
-
-                // ----- 3. Write the HTTP-Response -----
-                var writerAlsoToConsole = new StreamTracer(writer);  // we use a simple helper-class StreamTracer to write the HTTP-Response to the client and to the console
-
-                writerAlsoToConsole.WriteLine("HTTP/1.0 200 OK");    // first line in HTTP-Response contains the HTTP-Version and the status code
-                writerAlsoToConsole.WriteLine("Content-Type: text/html; charset=utf-8");     // the HTTP-headers (in HTTP after the first line, until the empy line)
-                writerAlsoToConsole.WriteLine();
-                writerAlsoToConsole.WriteLine("<html><body><h1>Hello World!</h1></body></html>");    // the HTTP-content (here we just return a minimalistic HTML Hello-World)
-
-                Console.WriteLine("========================================");
+                ThreadPool.QueueUserWorkItem(o => httpProcessor.Process());
 
                 Thread.Sleep(100); // reduce CPU load
             }
