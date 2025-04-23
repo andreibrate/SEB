@@ -5,3 +5,4 @@
 18.04.	- 0.5h StreamTracer + Server 1st iteration
 19.04.	- 3.5h understanding + writing/editing server (HttpServer, HttpRequest, HttpProcessor); HttpResponse TBI
 21.04.	- 2.5h more server stuff (HttpResponse, HttpProcessor - to do: add endpoints)
+23.04.	- 1.5h finishing server and IEndpoint (to prepare for starting endpoints)
