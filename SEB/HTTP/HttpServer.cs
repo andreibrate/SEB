@@ -6,6 +6,7 @@ using System.Net.Sockets;
 using System.Text;
 using System.Threading.Tasks;
 using SEB.HTTP;
+using SEB.HTTP.Endpoints;
 
 namespace SEB.HTTP
 {
@@ -14,6 +15,7 @@ namespace SEB.HTTP
         private IPAddress ip = IPAddress.Loopback; // localhost
         private int port = 10001;
         private TcpListener httpServer;
+        public Dictionary<string, IEndpoint> Endpoints { get; } = new();
 
         public HttpServer()
         {
@@ -38,11 +40,17 @@ namespace SEB.HTTP
                 // ----- 0. Accept the TCP-Client and create the reader and writer -----
                 var clientSocket = httpServer.AcceptTcpClient();
                 var httpProcessor = new HttpProcessor(this, clientSocket);
+
                 // ThreadPool for multiple threads
                 ThreadPool.QueueUserWorkItem(o => httpProcessor.Process());
 
                 Thread.Sleep(100); // reduce CPU load
             }
+        }
+
+        public void RegisterEndpoint(string path, IEndpoint endpoint)
+        {
+            Endpoints.Add(path, endpoint);
         }
     }
 }

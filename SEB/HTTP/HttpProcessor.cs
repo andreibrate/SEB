@@ -28,33 +28,19 @@ namespace SEB.HTTP
             using var writer = new StreamWriter(clientSocket.GetStream()) { AutoFlush = true };
             var response = new HttpResponse(writer);
 
-            // endpoints - TBI
-
-            // if (request.Method == "GET")
-            // {
-            //     response.ResponseCode = 200;
-            //     response.ResponseMessage = "OK";
-            //     response.Headers["Content-Type"] = "text/html";
-            //     response.Body = "<html><body><h1>Hello World!</h1></body></html>";
-            // }
-            // else if (request.Method == "POST")
-            // {
-            //     response.ResponseCode = 200;
-            //     response.ResponseMessage = "OK";
-            //     response.Headers["Content-Type"] = "text/plain";
-            //     response.Body = "POST request received!";
-            // }
-            // else
-            // {
-            //     response.ResponseCode = 405;
-            //     response.ResponseMessage = "Method Not Allowed";
-            //     response.Headers["Content-Type"] = "text/plain";
-            //     response.Body = "Method Not Allowed";
-            // }
-
-
+            // endpoints processing
+            var pathSegments = request.Path.Split('/');
+            var endpointKey = pathSegments.Length > 1 ? pathSegments[1] : string.Empty;
+            var endpoint = httpServer.Endpoints.ContainsKey(endpointKey) ? httpServer.Endpoints[endpointKey] : null;
+            if (endpoint == null || !endpoint.HandleRequest(request, response))
+            {
+                response.ResponseCode = 404;
+                response.ResponseMessage = "Not Found";
+                response.Body = "Not found!";
+            }
 
             Console.WriteLine("----------------------------------------");
+
             // ----- 3. Write the HTTP-Response -----
             response.SendResponse();
 
