@@ -39,7 +39,7 @@ namespace SEB.HTTP
             // the HTTP-headers (in HTTP after the first line, until the empty line)
             if (!Headers.ContainsKey("Content-Type"))
             {
-                Headers["Content-Type"] = "text/html; charset=utf-8";
+                Headers["Content-Type"] = "application/json"; // all commands in curl script are JSON
             }
 
             // the HTTP-headers (in HTTP after the first line, until the empty line)
