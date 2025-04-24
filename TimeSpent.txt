@@ -8,3 +8,7 @@
 23.04.	- 1.5h finishing server and IEndpoint (to prepare for starting endpoints)
 	- 0.5h realized i need handlers for endpoints and for handlers i need repos
 	- 0.5h started working on DB stuff
+24.04.	- 0.5h started interfaces for repos(user, exercise, tournament)
+	- 1h updated models, added exercise types Enum
+	- 1.25h analyzed curl script
+	- 0.25h prepared questions for lector regarding curl script and project structure
