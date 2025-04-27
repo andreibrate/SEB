@@ -13,3 +13,8 @@ E:\FH\Semester 3\1. SWEN\3. Antritt\SEB\SEB\obj\Debug\net8.0\refint\SEB.dll
 E:\FH\Semester 3\1. SWEN\3. Antritt\SEB\SEB\obj\Debug\net8.0\SEB.pdb
 E:\FH\Semester 3\1. SWEN\3. Antritt\SEB\SEB\obj\Debug\net8.0\SEB.genruntimeconfig.cache
 E:\FH\Semester 3\1. SWEN\3. Antritt\SEB\SEB\obj\Debug\net8.0\ref\SEB.dll
+E:\FH\Semester 3\1. SWEN\3. Antritt\SEB\SEB\bin\Debug\net8.0\Microsoft.Extensions.DependencyInjection.Abstractions.dll
+E:\FH\Semester 3\1. SWEN\3. Antritt\SEB\SEB\bin\Debug\net8.0\Microsoft.Extensions.Logging.Abstractions.dll
+E:\FH\Semester 3\1. SWEN\3. Antritt\SEB\SEB\bin\Debug\net8.0\Npgsql.dll
+E:\FH\Semester 3\1. SWEN\3. Antritt\SEB\SEB\obj\Debug\net8.0\SEB.csproj.AssemblyReference.cache
+E:\FH\Semester 3\1. SWEN\3. Antritt\SEB\SEB\obj\Debug\net8.0\SEB.csproj.Up2Date
