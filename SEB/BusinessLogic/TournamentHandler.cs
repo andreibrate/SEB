@@ -80,6 +80,28 @@ namespace SEB.BusinessLogic
             }
         }
 
+        public List<Tournament> GetAllTournaments()
+        {
+            return _tournamentRepo.GetAllTournaments();
+        }
 
+        public List<Guid> GetParticipants(Guid tournamentId)
+        {
+            return _tournamentRepo.GetParticipants(tournamentId);
+        }
+
+        public User? GetCurrentLeader(List<Guid> participantIds)
+        {
+            var users = new List<User>();
+            foreach (var userId in participantIds)
+            {
+                var user = _userRepo.GetUserById(userId);
+                if (user != null)
+                {
+                    users.Add(user);
+                }
+            }
+            return users.OrderByDescending(u => u.Exercises.Count).FirstOrDefault();
+        }
     }
 }
