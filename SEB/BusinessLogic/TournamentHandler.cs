@@ -49,8 +49,8 @@ namespace SEB.BusinessLogic
 
             int maxExercises = exerciseResults.Values.Max();
             var winners = exerciseResults
-                .Where(x => x.Value == maxExercises)
-                .Select(x => x.Key)
+                .Where(x => x.Value == maxExercises)    // exercise count
+                .Select(x => x.Key)                     // userId
                 .ToList();
 
             bool isDraw = winners.Count > 1;
@@ -63,6 +63,7 @@ namespace SEB.BusinessLogic
                 var user = _userRepo.GetUserById(userId);
                 if (user == null)
                 {
+                    Console.WriteLine($"Warning: User {userId} not found during tournament finish.");
                     continue;
                 }
 
