@@ -9,5 +9,7 @@ namespace SEB.DataAccess.Interfaces
 {
     public interface IExerciseRepo
     {
+        void AddExercise(Exercise exercise);
+        List<Exercise> GetExercisesByUserId(Guid userId);
     }
 }
