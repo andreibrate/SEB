@@ -18,4 +18,9 @@
 	- 0.5h ExerciseRepo and ExerciseHandler
 	- 0.75h ExerciseEP
 	- 0.5h TournamentRepo and TournamentHandler
-	- 
+	- 0.5h TournamentEP
+	- 0.5h SessionEP
+	- 0.5h StatsEP
+	- 0.25h Updated user (repo and handler) for ScoreEP
+	- 0.75h ScoreEP
+	- 0.5h HistoryEP
