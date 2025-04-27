@@ -14,6 +14,7 @@ namespace SEB.DataAccess.Interfaces
         User? GetUserById(Guid userId);
         User? GetUserByUsername(string username);
         User? GetUserByToken(string token);
+        List<User> GetAllUsers();
         void UpdateUser(User user);
     }
 }

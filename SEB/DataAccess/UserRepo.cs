@@ -156,6 +156,32 @@ namespace SEB.DataAccess
             return null;
         }
 
+        public List<User> GetAllUsers()
+        {
+            var users = new List<User>();
+
+            using var connection = new NpgsqlConnection(_connectionString);
+            connection.Open();
+
+            using var command = connection.CreateCommand();
+            command.CommandText = "SELECT Id, Username, Password, Elo, Token FROM Users;";
+
+            using var reader = command.ExecuteReader();
+            while (reader.Read())
+            {
+                users.Add(new User
+                {
+                    Id = reader.GetGuid(0),
+                    Username = reader.GetString(1),
+                    Password = reader.GetString(2),
+                    Elo = reader.GetInt32(3),
+                    Token = reader.GetString(4),
+                    Exercises = new List<Exercise>()
+                });
+            }
+
+            return users;
+        }
 
         public void UpdateUser(User user)
         {
