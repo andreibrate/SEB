@@ -1,0 +1,174 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using SEB.DataAccess.Interfaces;
+using SEB.Models;
+using Npgsql;
+using SEB.Models.Enums;
+
+namespace SEB.DataAccess
+{
+    public class TournamentRepo : ITournamentRepo
+    {
+        private readonly string _connectionString;
+        public TournamentRepo(string connectionString)
+        {
+            _connectionString = connectionString;
+        }
+
+        public void CreateTournament(Tournament tournament)
+        {
+            using var connection = new NpgsqlConnection(_connectionString);
+            connection.Open();
+
+            using var command = connection.CreateCommand();
+            command.CommandText = @"
+                INSERT INTO Tournaments (Id, StartTime, IsActive, IsDraw)
+                VALUES (@Id, @StartTime, @IsActive, @IsDraw);
+            ";
+
+            command.Parameters.AddWithValue("@Id", tournament.Id);
+            command.Parameters.AddWithValue("@StartTime", tournament.StartTime);
+            command.Parameters.AddWithValue("@IsActive", tournament.IsActive);
+            command.Parameters.AddWithValue("@IsDraw", tournament.IsDraw);
+
+            command.ExecuteNonQuery();
+        }
+
+        public Tournament? GetTournamentById(Guid tournamentId)
+        {
+            using var connection = new NpgsqlConnection(_connectionString);
+            connection.Open();
+
+            using var command = connection.CreateCommand();
+            command.CommandText = @"
+                SELECT Id, StartTime, IsActive, IsDraw
+                FROM Tournaments
+                WHERE Id = @Id;
+            ";
+            command.Parameters.AddWithValue("@Id", tournamentId);
+
+            using var reader = command.ExecuteReader();
+            if (reader.Read())
+            {
+                var tournament = new Tournament
+                {
+                    Id = reader.GetGuid(0),
+                    StartTime = reader.GetDateTime(1),
+                    IsActive = reader.GetBoolean(2),
+                    IsDraw = reader.GetBoolean(3)
+                };
+
+                return tournament;
+            }
+
+            return null;
+        }
+
+        public List<Tournament> GetAllTournaments()
+        {
+            var tournaments = new List<Tournament>();
+
+            using var connection = new NpgsqlConnection(_connectionString);
+            connection.Open();
+
+            using var command = connection.CreateCommand();
+            command.CommandText = @"
+                SELECT Id, StartTime, IsActive, IsDraw
+                FROM Tournaments;
+            ";
+
+            using var reader = command.ExecuteReader();
+            while (reader.Read())
+            {
+                var tournament = new Tournament
+                {
+                    Id = reader.GetGuid(0),
+                    StartTime = reader.GetDateTime(1),
+                    IsActive = reader.GetBoolean(2),
+                    IsDraw = reader.GetBoolean(3)
+                };
+
+                tournaments.Add(tournament);
+            }
+
+            return tournaments;
+        }
+
+        public void AddParticipant(Guid tournamentId, Guid userId)
+        {
+            using var connection = new NpgsqlConnection(_connectionString);
+            connection.Open();
+
+            using var command = connection.CreateCommand();
+            command.CommandText = @"
+                INSERT INTO TournamentParticipants (TournamentId, UserId)
+                VALUES (@TournamentId, @UserId);
+            ";
+
+            command.Parameters.AddWithValue("@TournamentId", tournamentId);
+            command.Parameters.AddWithValue("@UserId", userId);
+
+            command.ExecuteNonQuery();
+        }
+
+        public List<Guid> GetParticipants(Guid tournamentId)
+        {
+            var participants = new List<Guid>();
+
+            using var connection = new NpgsqlConnection(_connectionString);
+            connection.Open();
+
+            using var command = connection.CreateCommand();
+            command.CommandText = @"
+                SELECT UserId
+                FROM TournamentParticipants
+                WHERE TournamentId = @TournamentId;
+            ";
+            command.Parameters.AddWithValue("@TournamentId", tournamentId);
+
+            using var reader = command.ExecuteReader();
+            while (reader.Read())
+            {
+                participants.Add(reader.GetGuid(0));
+            }
+
+            return participants;
+        }
+
+        public void SetWinners(Guid tournamentId, List<Guid> winnerIds, bool isDraw)
+        {
+            using var connection = new NpgsqlConnection(_connectionString);
+            connection.Open();
+
+            // update tournament table
+            using var command = connection.CreateCommand();
+            command.CommandText = @"
+                UPDATE Tournaments
+                SET IsActive = FALSE,
+                    IsDraw = @IsDraw
+                WHERE Id = @TournamentId;
+            ";
+            command.Parameters.AddWithValue("@IsDraw", isDraw);
+            command.Parameters.AddWithValue("@TournamentId", tournamentId);
+            command.ExecuteNonQuery();
+
+            // add winners
+            foreach (var winnerId in winnerIds)
+            {
+                using var winnerCommand = connection.CreateCommand();
+                winnerCommand.CommandText = @"
+                    INSERT INTO TournamentWinners (TournamentId, UserId)
+                    VALUES (@TournamentId, @UserId);
+                ";
+
+                winnerCommand.Parameters.AddWithValue("@TournamentId", tournamentId);
+                winnerCommand.Parameters.AddWithValue("@UserId", winnerId);
+
+                winnerCommand.ExecuteNonQuery();
+            }
+        }
+    }
+}

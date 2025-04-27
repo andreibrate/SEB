@@ -12,6 +12,8 @@ namespace SEB.DataAccess.Interfaces
         void CreateTournament(Tournament tournament);
         Tournament? GetTournamentById(Guid tournamentId);
         List<Tournament> GetAllTournaments();
-        void SetWinner(Guid tournamentId, Guid winnerId, bool isDraw);
+        void AddParticipant(Guid tournamentId, Guid userId);
+        List<Guid> GetParticipants(Guid tournamentId);
+        void SetWinners(Guid tournamentId, List<Guid> winnerIds, bool isDraw);
     }
 }
