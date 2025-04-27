@@ -10,8 +10,8 @@ namespace SEB.Models
     {
         public Guid Id { get; set; }
         public DateTime StartTime { get; set; }
-        public List<User> Users { get; set; }
-        public Guid? WinnerId { get; set; }
+        public List<Guid> ParticipantIds { get; set; } = new List<Guid>();
+        public List<Guid> WinnerIds { get; set; } = new List<Guid>();
         public bool IsActive { get; set; } = true;
         public bool IsDraw { get; set; }
 
@@ -20,26 +20,25 @@ namespace SEB.Models
         {
             Id = Guid.NewGuid();
             StartTime = DateTime.UtcNow;
-            Users = new List<User>();
             IsActive = true;
         }
 
         // ctor for already known users
-        public Tournament(List<User> users)
+        public Tournament(List<Guid> participantIds)
         {
             Id = Guid.NewGuid();
             StartTime = DateTime.UtcNow;
-            Users = users;
+            ParticipantIds = participantIds;
             IsActive = true;
         }
 
         // ctor for loading from DB
-        public Tournament(Guid id, DateTime startTime, List<User> users, Guid? winnerId, bool isActive, bool isDraw)
+        public Tournament(Guid id, DateTime startTime, List<Guid> participantIds, List<Guid> winnerIds, bool isActive, bool isDraw)
         {
             Id = id;
             StartTime = startTime;
-            Users = users;
-            WinnerId = winnerId;
+            ParticipantIds = participantIds;
+            WinnerIds = winnerIds;
             IsActive = isActive;
             IsDraw = isDraw;
         }
