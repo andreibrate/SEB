@@ -12,3 +12,5 @@
 	- 1h updated models, added exercise types Enum
 	- 1.25h analyzed curl script
 	- 0.25h prepared questions for lector regarding curl script and project structure
+26.04.	- 1.5h finished UserRepo and UserHandler and started UserEP
+	- 1h worked on UserEP (almost finished)
