@@ -18,6 +18,11 @@ namespace SEB.BusinessLogic
 
         public void AddExercise(Exercise exercise)
         {
+            if (exercise.Count <= 0 || exercise.Duration <= 0)
+            {
+                throw new Exception("Exercise must have positive count and duration.");
+            }
+
             _exerciseRepo.AddExercise(exercise);
         }
         public List<Exercise> GetExercisesByUserId(Guid userId)
