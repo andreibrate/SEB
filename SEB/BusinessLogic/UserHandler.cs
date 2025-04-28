@@ -19,6 +19,12 @@ namespace SEB.BusinessLogic
 
         public void Register(User user)
         {
+            var existingUser = _userRepo.GetUserByUsername(user.Username);
+            if (existingUser != null)
+            {
+                throw new Exception("Username already taken.");
+            }
+
             _userRepo.RegisterUser(user);
         }
 
