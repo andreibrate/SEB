@@ -24,3 +24,6 @@
 	- 0.25h Updated user (repo and handler) for ScoreEP
 	- 0.75h ScoreEP
 	- 0.5h HistoryEP
+28.04.	- 0.75h UserHandlerTests
+	- 0.5h ExerciseHandlerTests
+	- 1h TournamentHandlerTests 
