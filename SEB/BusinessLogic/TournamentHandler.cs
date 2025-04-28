@@ -39,6 +39,11 @@ namespace SEB.BusinessLogic
             var participants = _tournamentRepo.GetParticipants(tournamentId);
             var exerciseResults = new Dictionary<Guid, int>(); // UserId -> exercise count
 
+            if (tournament == null)
+            {
+                throw new Exception("Tournament not found.");
+            }
+
             // Sum all exercises for each participant
             foreach (var userId in participants)
             {
