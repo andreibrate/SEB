@@ -66,7 +66,7 @@ namespace SEB.DataAccess
                 var pass = reader.GetString(2);
                 var elo = reader.GetInt32(3);
                 var token = reader.GetString(4);
-                return new User(id, userName, pass, null, null, elo, new List<Exercise>(), token);
+                return new User(id, userName, pass, null, null, null, elo, new List<Exercise>(), token);
             }
             return null;
         }
@@ -93,7 +93,7 @@ namespace SEB.DataAccess
                 var elo = reader.GetInt32(3);
                 var token = reader.GetString(4);
 
-                return new User(id, username, password, null, null, elo, new List<Exercise>(), token);
+                return new User(id, username, password, null, null, null, elo, new List<Exercise>(), token);
             }
 
             return null;
@@ -121,7 +121,7 @@ namespace SEB.DataAccess
                 var elo = reader.GetInt32(3);
                 var token = reader.GetString(4);
 
-                return new User(id, userName, password, null, null, elo, new List<Exercise>(), token);
+                return new User(id, userName, password, null, null, null, elo, new List<Exercise>(), token);
             }
 
             return null;
@@ -150,7 +150,7 @@ namespace SEB.DataAccess
                 var elo = reader.GetInt32(3);
                 var userToken = reader.GetString(4);
 
-                return new User(id, username, password, null, null, elo, new List<Exercise>(), userToken);
+                return new User(id, username, password, null, null, null, elo, new List<Exercise>(), userToken);
             }
 
             return null;
