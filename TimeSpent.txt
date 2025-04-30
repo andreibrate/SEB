@@ -26,4 +26,8 @@
 	- 0.5h HistoryEP
 28.04.	- 0.75h UserHandlerTests
 	- 0.5h ExerciseHandlerTests
-	- 1h TournamentHandlerTests 
+	- 1h TournamentHandlerTests
+30.04.	- 1.5h DB stuff (DB_Manager.cs + PostgresDB) 
+	- 0.5h main program stuff
+	- 0.5h main program + server
+	- 0.5h debugging main program (still some issues to be resolved)
