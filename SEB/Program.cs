@@ -52,13 +52,22 @@ namespace SEB
                 // start server
                 serverThread.Start();
 
+                // shut down option for HttpServer
+                Console.WriteLine("Press 'q' to stop the server...");
+                while (Console.ReadKey(true).Key != ConsoleKey.Q)
+                {
+                    Thread.Sleep(100); // avoids unnecessary resource usage.
+                }
+                serverThread.Join();
+
             }
             finally
             {
                 // cleanup
                 Console.WriteLine("Stopping server...");
-                //server?.Stop();
+                server?.Stop();
 
+                // only for debug mode, not in production/release -> performance-heavy checks, so only for debug
                 //#if DEBUG
                 Console.WriteLine("Cleaning up Database...");
                 DB_Manager.CleanupTables(connectionString);
