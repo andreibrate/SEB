@@ -31,3 +31,7 @@
 	- 0.5h main program stuff
 	- 0.5h main program + server
 	- 0.5h debugging main program (still some issues to be resolved)
+01.05.	- 0.25h fix "q stops program"
+	- 2.25h debug not finding endpoints (finally fixed)
+	- 0.5h fixing endpoints
+	- 0.1h debugging
