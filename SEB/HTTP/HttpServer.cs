@@ -53,7 +53,8 @@ namespace SEB.HTTP
                 Thread.Sleep(100); // reduce CPU load
             }
 
-            // cleanup code after the loop ends, not actually called again from Run()
+            // cleanup code after the loop ends to free port and shut socket down,
+            // not actually called again from Run()
             httpServer.Stop();
             Console.WriteLine("HTTP server stopped.");
         }

@@ -42,12 +42,12 @@ namespace SEB
                 var serverThread = new Thread(() => server.Run());
 
                 // initialize endpoints
-                server.RegisterEndpoint("users", new UserEP(userHandler));          // register
-                server.RegisterEndpoint("sessions", new SessionEP(userHandler));    // login
-                server.RegisterEndpoint("stats", new StatsEP(userHandler, exerciseHandler)); // stats
-                server.RegisterEndpoint("score", new ScoreEP(userHandler)); // scoreboard
-                server.RegisterEndpoint("history", new HistoryEP(exerciseHandler, userHandler)); // history
-                server.RegisterEndpoint("tournament", new TournamentEP(tournamentHandler, userHandler, exerciseHandler)); // tournament
+                server.RegisterEndpoint("users", new UserEP(userHandler));                                                  // register
+                server.RegisterEndpoint("sessions", new SessionEP(userHandler));                                            // login
+                server.RegisterEndpoint("stats", new StatsEP(userHandler, exerciseHandler));                                // stats
+                server.RegisterEndpoint("score", new ScoreEP(userHandler));                                                 // scoreboard
+                server.RegisterEndpoint("history", new HistoryEP(exerciseHandler, userHandler));                            // history
+                server.RegisterEndpoint("tournament", new TournamentEP(tournamentHandler, userHandler, exerciseHandler));   // tournament
 
                 // start server
                 serverThread.Start();
@@ -58,15 +58,14 @@ namespace SEB
                 {
                     Thread.Sleep(100); // avoids unnecessary resource usage.
                 }
-                serverThread.Join();
+                Console.WriteLine("Stopping server...");
+                server.Stop();          // signal the loop to exit
+                serverThread.Join();    // wait for it to clean up and stop
 
             }
             finally
             {
                 // cleanup
-                Console.WriteLine("Stopping server...");
-                server?.Stop();
-
                 // only for debug mode, not in production/release -> performance-heavy checks, so only for debug
                 //#if DEBUG
                 Console.WriteLine("Cleaning up Database...");
