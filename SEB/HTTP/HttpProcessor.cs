@@ -29,11 +29,19 @@ namespace SEB.HTTP
             var response = new HttpResponse(writer);
 
             // endpoints processing
-            var pathSegments = request.Path.Split('/');
-            var endpointKey = pathSegments.Length > 1 ? pathSegments[1] : string.Empty;
-            var endpoint = httpServer.Endpoints.ContainsKey(endpointKey) ? httpServer.Endpoints[endpointKey] : null;
-            if (endpoint == null || !endpoint.HandleRequest(request, response))
+            // Console.WriteLine($"Incoming request path: {request.Path}"); // used previously for debugging
+            var cleanPath = request.Path.TrimStart('/');
+            // Console.WriteLine($"Cleaned path: {cleanPath}"); // used previously for debugging
+            var pathSegments = cleanPath.Split('/');
+            var endpointKey = pathSegments.Length > 0 ? pathSegments[0].Trim().ToLowerInvariant() : string.Empty;
+            // Console.WriteLine($"Resolved endpointKey: '{endpointKey}'");  // used previously for debugging
+            //var endpoint = httpServer.Endpoints.ContainsKey(endpointKey) ? httpServer.Endpoints[endpointKey] : null;
+            //if (endpoint == null || !endpoint.HandleRequest(request, response))
+
+            // keyword "out" allows TryGetValue to modify the endpoint variable directly (by reference)
+            if (!httpServer.Endpoints.TryGetValue(endpointKey, out var endpoint) || !endpoint.HandleRequest(request, response))
             {
+                // Console.WriteLine($"Endpoint not found: {endpointKey}");  // used previously for debugging
                 response.ResponseCode = 404;
                 response.ResponseMessage = "Not Found";
                 response.Body = "Not found!";

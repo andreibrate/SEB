@@ -37,6 +37,9 @@ namespace SEB.HTTP
             // ===== I. Start the HTTP-Server =====
             httpServer.Start();
             Console.WriteLine($"HTTP server started on {ip}:{port}");
+            Console.WriteLine("");
+            Console.WriteLine("========================================");
+            Console.WriteLine("");
 
             while (isRunning)
             {

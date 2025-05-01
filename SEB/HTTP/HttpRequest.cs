@@ -27,7 +27,16 @@ namespace SEB.HTTP
             // 1.1 first line in HTTP contains the method, path and HTTP version
             string? line = reader.ReadLine();
             if (line != null)
+            {
                 Console.WriteLine(line);
+                var parts = line.Split(' ');
+                if (parts.Length == 3)
+                {
+                    Method = parts[0].Trim();
+                    Path = parts[1].Trim();
+                    HttpVersion = parts[2].Trim();
+                }
+            }
 
             // 1.2 read the HTTP-headers (in HTTP after the first line, until the empy line)
             int content_length = 0; // we need the content_length later, to be able to read the HTTP-content
@@ -61,7 +70,9 @@ namespace SEB.HTTP
                         break;
                     data.Append(chars, 0, bytesRead);
                 }
-                Console.WriteLine(data.ToString());
+
+                Body = data.ToString();
+                Console.WriteLine(Body);
             }
         }
     }
