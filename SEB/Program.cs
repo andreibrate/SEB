@@ -56,7 +56,7 @@ namespace SEB
                 Console.WriteLine("Press 'q' to stop the server...");
                 while (Console.ReadKey(true).Key != ConsoleKey.Q)
                 {
-                    Thread.Sleep(100); // avoids unnecessary resource usage.
+                    Thread.Sleep(100); // avoids unnecessary resource usage
                 }
                 Console.WriteLine("Stopping server...");
                 server.Stop();          // signal the loop to exit
