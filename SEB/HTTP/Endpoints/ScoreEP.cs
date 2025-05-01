@@ -18,7 +18,7 @@ namespace SEB.HTTP.Endpoints
 
         public bool HandleRequest(HttpRequest request, HttpResponse response)
         {
-            if (request.Method == "GET" && request.Path == "score")
+            if (request.Method == "GET" && request.Path.TrimStart('/') == "score")
             {
                 return HandleGetScoreboard(request, response);
             }

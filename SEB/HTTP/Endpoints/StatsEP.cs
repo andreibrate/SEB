@@ -22,7 +22,7 @@ namespace SEB.HTTP.Endpoints
 
         public bool HandleRequest(HttpRequest request, HttpResponse response)
         {
-            if (request.Method == "GET" && request.Path == "stats")
+            if (request.Method == "GET" && request.Path.TrimStart('/') == "stats")
             {
                 return HandleGetStats(request, response);
             }

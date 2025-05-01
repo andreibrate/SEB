@@ -21,7 +21,7 @@ namespace SEB.HTTP.Endpoints
 
         public bool HandleRequest(HttpRequest request, HttpResponse response)
         {
-            if (request.Method == "GET" && request.Path == "history")
+            if (request.Method == "GET" && request.Path.TrimStart('/') == "history")
             {
                 return HandleGetHistory(request, response);
             }

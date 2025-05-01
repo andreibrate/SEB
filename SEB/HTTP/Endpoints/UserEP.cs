@@ -20,18 +20,21 @@ namespace SEB.HTTP.Endpoints
 
         public bool HandleRequest(HttpRequest request, HttpResponse response)
         {
-            if (request.Method == "POST" && request.Path == "users")
+            var path = request.Path.TrimStart('/');
+
+            if (request.Method == "POST" && path == "users")
             {
                 return HandlePostUserRequests(request, response);
             }
-            else if (request.Method == "GET" && request.Path.StartsWith("users/"))
+            else if (request.Method == "GET" && path.StartsWith("users"))
             {
                 return HandleGetUserRequests(request, response);
             }
-            else if (request.Method == "PUT" && request.Path.StartsWith("users/"))
+            else if (request.Method == "PUT" && path.StartsWith("users"))
             {
                 return HandlePutUserRequests(request, response);
             }
+
             return false;
         }
 

@@ -22,7 +22,7 @@ namespace SEB.HTTP.Endpoints
         }
         public bool HandleRequest(HttpRequest request, HttpResponse response)
         {
-            if (request.Method == "GET" && request.Path == "tournament")
+            if (request.Method == "GET" && request.Path.TrimStart('/') == "tournament")
             {
                 return HandleGetTournaments(request, response);
             }

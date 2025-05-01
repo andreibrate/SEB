@@ -22,11 +22,11 @@ namespace SEB.HTTP.Endpoints
 
         public bool HandleRequest(HttpRequest request, HttpResponse response)
         {
-            if (request.Method == "POST" && request.Path == "exercises")
+            if (request.Method == "POST" && request.Path.TrimStart('/') == "exercises")
             {
                 return HandlePostExercise(request, response);
             }
-            else if (request.Method == "GET" && request.Path == "exercises")
+            else if (request.Method == "GET" && request.Path.TrimStart('/') == "exercises")
             {
                 return HandleGetExercises(request, response);
             }

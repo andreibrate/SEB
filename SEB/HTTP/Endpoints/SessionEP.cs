@@ -19,7 +19,7 @@ namespace SEB.HTTP.Endpoints
 
         public bool HandleRequest(HttpRequest request, HttpResponse response)
         {
-            if (request.Method == "POST" && request.Path == "sessions")
+            if (request.Method == "POST" && request.Path.TrimStart('/') == "sessions")
             {
                 return HandleLogin(request, response);
             }
