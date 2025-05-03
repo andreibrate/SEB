@@ -13,7 +13,10 @@ namespace SEB.HTTP
         public string Method { get; set; } = "";
         public string Path { get; set; } = "";
         public string HttpVersion { get; set; } = "";
-        public Dictionary<string, string> Headers { get; } = new();
+
+        // create headers with case-insensitive keys
+        // e.g. Headers["Authorization"] treated the same as Headers["authorization"]
+        public Dictionary<string, string> Headers { get; } = new(StringComparer.OrdinalIgnoreCase);
         public string Body { get; set; } = "";
         public Dictionary<string, string>? RouteParameters { get; set; }
 
@@ -49,10 +52,19 @@ namespace SEB.HTTP
                 }
 
                 // Parse the header
-                var parts = line.Split(':');
-                if (parts.Length == 2 && parts[0] == "Content-Length")
+                var parts = line.Split(':', 2);
+                if (parts.Length == 2)
                 {
-                    content_length = int.Parse(parts[1].Trim());
+                    var key = parts[0].Trim();
+                    var value = parts[1].Trim();
+                    Headers[key] = value;
+
+                    // check if key is the same as content length, ignoring uppercase/lowercase differences
+                    // if (key.ToLower() == "content-length") // simpler version
+                    if (key.Equals("Content-Length", StringComparison.OrdinalIgnoreCase))
+                    {
+                        content_length = int.Parse(value);
+                    }
                 }
             }
 
