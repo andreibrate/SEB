@@ -35,3 +35,4 @@
 	- 2.25h debug not finding endpoints (finally fixed)
 	- 0.5h fixing endpoints
 	- 0.1h debugging
+03.05.	- 4h fixing endpoints, handlers, repos for curl script
