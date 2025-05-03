@@ -41,7 +41,7 @@ namespace SEB.HTTP.Endpoints
                 .ToList();
 
             response.Body = JsonSerializer.Serialize(scoreboard);
-            response.Headers["Content-Type"] = "application/json";
+            //response.Headers["Content-Type"] = "application/json";
             response.ResponseCode = 200;
             response.ResponseMessage = "OK";
 

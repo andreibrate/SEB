@@ -71,7 +71,7 @@ namespace SEB.HTTP.Endpoints
             if (registrationSuccess)
             {
                 response.ResponseCode = 201;
-                response.ResponseMessage = "OK";
+                response.ResponseMessage = "User created";
             }
             else
             {
@@ -84,6 +84,13 @@ namespace SEB.HTTP.Endpoints
 
         private bool HandleGetUserRequests(HttpRequest request, HttpResponse response)
         {
+            if (!request.Headers.ContainsKey("Authorization"))
+            {
+                response.ResponseCode = 401;
+                response.ResponseMessage = "Unauthorized";
+                return true;
+            }
+
             if (!request.Headers.ContainsKey("Authorization") || !request.Headers["Authorization"].StartsWith("Basic "))
             {
                 response.ResponseCode = 401;
@@ -103,8 +110,14 @@ namespace SEB.HTTP.Endpoints
                 return true;
             }
 
-            var user = _userHandler.GetUserByUsername(requestedUsername);
+            if (requestingUser.Username != requestedUsername)
+            {
+                response.ResponseCode = 403;
+                response.ResponseMessage = "Forbidden - You can only access your own profile";
+                return true;
+            }
 
+            var user = _userHandler.GetUserByUsername(requestedUsername);
             if (user == null)
             {
                 response.ResponseCode = 404;
@@ -117,7 +130,7 @@ namespace SEB.HTTP.Endpoints
             {
                 response.Body = JsonSerializer.Serialize(user);
                 response.ResponseCode = 200;
-                response.ResponseMessage = "OK";
+                response.ResponseMessage = "OK - GET user data";
             }
             catch (JsonException)
             {
@@ -130,6 +143,13 @@ namespace SEB.HTTP.Endpoints
 
         private bool HandlePutUserRequests(HttpRequest request, HttpResponse response)
         {
+            if (!request.Headers.ContainsKey("Authorization"))
+            {
+                response.ResponseCode = 401;
+                response.ResponseMessage = "Unauthorized";
+                return true;
+            }
+
             if (!request.Headers.ContainsKey("Authorization") || !request.Headers["Authorization"].StartsWith("Basic "))
             {
                 response.ResponseCode = 401;
@@ -173,7 +193,7 @@ namespace SEB.HTTP.Endpoints
                 return true;
             }
 
-            user.Username = !string.IsNullOrEmpty(userData.Username) ? userData.Username : user.Username;
+            user.Name = !string.IsNullOrEmpty(userData.Name) ? userData.Name : user.Name;
             user.Bio = !string.IsNullOrEmpty(userData.Bio) ? userData.Bio : user.Bio;
             user.Image = !string.IsNullOrEmpty(userData.Image) ? userData.Image : user.Image;
 
@@ -191,12 +211,12 @@ namespace SEB.HTTP.Endpoints
             if (updateSuccess)
             {
                 response.ResponseCode = 200;
-                response.ResponseMessage = "OK";
+                response.ResponseMessage = "User updated";
             }
             else
             {
                 response.ResponseCode = 500;
-                response.ResponseMessage = "Internal Server Error - User update failed";
+                response.ResponseMessage = "User update failed";
             }
 
             return true;

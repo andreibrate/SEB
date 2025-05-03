@@ -36,39 +36,83 @@ namespace SEB.HTTP.Endpoints
                 return true;
             }
 
+            User? loginData = null;
+
             try
             {
-                var loginData = JsonSerializer.Deserialize<User>(request.Body);
-                if (loginData == null || string.IsNullOrEmpty(loginData.Username) || string.IsNullOrEmpty(loginData.Password))
-                {
-                    response.ResponseCode = 400;
-                    response.ResponseMessage = "Bad Request - Invalid login data";
-                    return true;
-                }
-
-                var user = _userHandler.Login(loginData.Username, loginData.Password);
-                if (user == null)
-                {
-                    response.ResponseCode = 401;
-                    response.ResponseMessage = "Unauthorized - Invalid username or password";
-                    return true;
-                }
-
-                response.Body = JsonSerializer.Serialize(new
-                {
-                    Token = user.Token          // anonymous object
-                });
-                response.Headers["Content-Type"] = "application/json";
-                response.ResponseCode = 200;
-                response.ResponseMessage = "Login successful";
+                loginData = JsonSerializer.Deserialize<User>(request.Body);
             }
-            catch
+            catch (JsonException)
             {
                 response.ResponseCode = 400;
                 response.ResponseMessage = "Bad Request - Malformed JSON";
+                return true;
             }
 
+            if (loginData == null || string.IsNullOrEmpty(loginData.Username) || string.IsNullOrEmpty(loginData.Password))
+            {
+                response.ResponseCode = 401;
+                response.ResponseMessage = "Unauthorized - Invalid username or password";
+                return true;
+            }
+
+            var user = _userHandler.Login(loginData.Username, loginData.Password);
+            if (user == null)
+            {
+                response.ResponseCode = 401;
+                response.ResponseMessage = "Unauthorized - Invalid username or password";
+                return true;
+            }
+
+            response.Body = JsonSerializer.Serialize(new { Token = user.Token });
+            response.ResponseCode = 200;
+            response.ResponseMessage = "Login successful";
             return true;
         }
+
+
+        //private bool HandleLogin(HttpRequest request, HttpResponse response)
+        //{
+        //    if (string.IsNullOrWhiteSpace(request.Body))
+        //    {
+        //        response.ResponseCode = 400;
+        //        response.ResponseMessage = "Missing login data";
+        //        return true;
+        //    }
+
+        //    try
+        //    {
+        //        var loginData = JsonSerializer.Deserialize<User>(request.Body);
+        //        if (loginData == null || string.IsNullOrEmpty(loginData.Username) || string.IsNullOrEmpty(loginData.Password))
+        //        {
+        //            response.ResponseCode = 400;
+        //            response.ResponseMessage = "Invalid login data";
+        //            return true;
+        //        }
+
+        //        var user = _userHandler.Login(loginData.Username, loginData.Password);
+        //        if (user == null)
+        //        {
+        //            response.ResponseCode = 401;
+        //            response.ResponseMessage = "Invalid username or password";
+        //            return true;
+        //        }
+
+        //        response.Body = JsonSerializer.Serialize(new
+        //        {
+        //            Token = user.Token          // anonymous object
+        //        });
+        //        //response.Headers["Content-Type"] = "application/json";
+        //        response.ResponseCode = 200;
+        //        response.ResponseMessage = "Login successful";
+        //    }
+        //    catch
+        //    {
+        //        response.ResponseCode = 400;
+        //        response.ResponseMessage = "Bad Request - Malformed JSON";
+        //    }
+
+        //    return true;
+        //}
     }
 }

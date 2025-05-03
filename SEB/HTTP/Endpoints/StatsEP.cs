@@ -59,7 +59,7 @@ namespace SEB.HTTP.Endpoints
             };
 
             response.Body = JsonSerializer.Serialize(statsResult);
-            response.Headers["Content-Type"] = "application/json";
+            //response.Headers["Content-Type"] = "application/json";
             response.ResponseCode = 200;
             response.ResponseMessage = "OK";
 
