@@ -78,7 +78,7 @@ namespace SEB.DataAccess
 
             using var command = connection.CreateCommand();
             command.CommandText = @"
-                SELECT Id, Username, Password, Elo, Token
+                SELECT Id, Username, Password, Elo, Token, Name, Bio, Image
                 FROM Users
                 WHERE Id = @id;
             ";
@@ -92,8 +92,11 @@ namespace SEB.DataAccess
                 var password = reader.GetString(2);
                 var elo = reader.GetInt32(3);
                 var token = reader.GetString(4);
+                var name = reader.IsDBNull(5) ? null : reader.GetString(5);
+                var bio = reader.IsDBNull(6) ? null : reader.GetString(6);
+                var image = reader.IsDBNull(7) ? null : reader.GetString(7);
 
-                return new User(id, username, password, null, null, null, elo, new List<Exercise>(), token);
+                return new User(id, username, password, name, bio, image, elo, new List<Exercise>(), token);
             }
 
             return null;
@@ -106,7 +109,7 @@ namespace SEB.DataAccess
 
             using var command = connection.CreateCommand();
             command.CommandText = @"
-                SELECT Id, Username, Password, Elo, Token
+                SELECT Id, Username, Password, Elo, Token, Name, Bio, Image
                 FROM Users
                 WHERE Username = @username;
             ";
@@ -120,8 +123,11 @@ namespace SEB.DataAccess
                 var password = reader.GetString(2);
                 var elo = reader.GetInt32(3);
                 var token = reader.GetString(4);
+                var name = reader.IsDBNull(5) ? null : reader.GetString(5);
+                var bio = reader.IsDBNull(6) ? null : reader.GetString(6);
+                var image = reader.IsDBNull(7) ? null : reader.GetString(7);
 
-                return new User(id, userName, password, null, null, null, elo, new List<Exercise>(), token);
+                return new User(id, userName, password, name, bio, image, elo, new List<Exercise>(), token);
             }
 
             return null;
@@ -135,7 +141,7 @@ namespace SEB.DataAccess
 
             using var command = connection.CreateCommand();
             command.CommandText = @"
-                SELECT Id, Username, Password, Elo, Token
+                SELECT Id, Username, Password, Elo, Token, Name, Bio, Image
                 FROM Users
                 WHERE Token = @token;
             ";
@@ -149,8 +155,12 @@ namespace SEB.DataAccess
                 var password = reader.GetString(2);
                 var elo = reader.GetInt32(3);
                 var userToken = reader.GetString(4);
+                var name = reader.IsDBNull(5) ? null : reader.GetString(5);
+                var bio = reader.IsDBNull(6) ? null : reader.GetString(6);
+                var image = reader.IsDBNull(7) ? null : reader.GetString(7);
 
-                return new User(id, username, password, null, null, null, elo, new List<Exercise>(), userToken);
+
+                return new User(id, username, password, name, bio, image, elo, new List<Exercise>(), userToken);
             }
 
             return null;
@@ -164,7 +174,7 @@ namespace SEB.DataAccess
             connection.Open();
 
             using var command = connection.CreateCommand();
-            command.CommandText = "SELECT Id, Username, Password, Elo, Token FROM Users;";
+            command.CommandText = "SELECT Id, Username, Password, Elo, Token, Name, Bio, Image FROM Users;";
 
             using var reader = command.ExecuteReader();
             while (reader.Read())
@@ -176,6 +186,9 @@ namespace SEB.DataAccess
                     Password = reader.GetString(2),
                     Elo = reader.GetInt32(3),
                     Token = reader.GetString(4),
+                    Name = reader.IsDBNull(5) ? null : reader.GetString(5),
+                    Bio = reader.IsDBNull(6) ? null : reader.GetString(6),
+                    Image = reader.IsDBNull(7) ? null : reader.GetString(7),
                     Exercises = new List<Exercise>()
                 });
             }
@@ -198,7 +211,13 @@ namespace SEB.DataAccess
 
             command.CommandText = @"
                 UPDATE Users
-                SET Username = @Username, Password = @Password, Elo = @Elo, Token = @Token
+                SET Username = @Username,
+                    Password = @Password,
+                    Elo = @Elo,
+                    Token = @Token,
+                    Name = @Name,
+                    Bio = @Bio,
+                    Image = @Image
                 WHERE Id = @Id;
             ";
 
@@ -207,6 +226,9 @@ namespace SEB.DataAccess
             command.Parameters.AddWithValue("@Password", user.Password);
             command.Parameters.AddWithValue("@Elo", user.Elo);
             command.Parameters.AddWithValue("@Token", user.Token);
+            command.Parameters.AddWithValue("@Name", user.Name ?? string.Empty);
+            command.Parameters.AddWithValue("@Bio", user.Bio ?? string.Empty);
+            command.Parameters.AddWithValue("@Image", user.Image ?? string.Empty);
 
             command.ExecuteNonQuery();
 
