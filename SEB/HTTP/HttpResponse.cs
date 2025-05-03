@@ -36,11 +36,12 @@ namespace SEB.HTTP
                 Headers["Content-Length"] = Body.Length.ToString();
             }
 
+            // commented out for better visibility in curl script
             // the HTTP-headers (in HTTP after the first line, until the empty line)
-            if (!Headers.ContainsKey("Content-Type"))
-            {
-                Headers["Content-Type"] = "application/json"; // all commands in curl script are JSON
-            }
+            //if (!Headers.ContainsKey("Content-Type"))
+            //{
+            //    Headers["Content-Type"] = "application/json"; // all commands in curl script are JSON
+            //}
 
             // the HTTP-headers (in HTTP after the first line, until the empty line)
             foreach (var header in Headers)
