@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using SEB.DataAccess.Interfaces;
 using SEB.Models;
+using SEB.Models.Enums;
 
 namespace SEB.BusinessLogic
 {
@@ -20,18 +21,14 @@ namespace SEB.BusinessLogic
             _userRepo = userRepo;
         }
 
-        public Tournament CreateTournament(List<Guid> participantIds)
+        public Tournament CreateTournament(Guid userId, Guid exerciseId)
         {
-            var tournament = new Tournament(participantIds);
+            var tournament = new Tournament();
             _tournamentRepo.CreateTournament(tournament);
-
-            foreach (var userId in participantIds)
-            {
-                _tournamentRepo.AddParticipant(tournament.Id, userId);
-            }
-
+            _tournamentRepo.AddParticipant(tournament.Id, userId, exerciseId, 0);
             return tournament;
         }
+
 
         public void FinishTournament(Guid tournamentId)
         {
@@ -108,5 +105,16 @@ namespace SEB.BusinessLogic
             }
             return users.OrderByDescending(u => u.Exercises.Count).FirstOrDefault();
         }
+
+        public void AddParticipant(Guid tournamentId, Guid userId, Guid exerciseId)
+        {
+            _tournamentRepo.AddParticipant(tournamentId, userId, exerciseId, eloChange: 0);
+        }
+
+        public void UpdateStatus(Guid tournamentId, TournamentStatus status)
+        {
+            _tournamentRepo.UpdateStatus(tournamentId, status);
+        }
+
     }
 }

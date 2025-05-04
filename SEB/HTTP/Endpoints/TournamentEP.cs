@@ -52,7 +52,7 @@ namespace SEB.HTTP.Endpoints
                 {
                     Id = tournament.Id,
                     StartTime = tournament.StartTime,
-                    IsActive = tournament.IsActive,
+                    Status = tournament.Status.ToString(),
                     ParticipantsCount = participants.Count,
                     Leader = leaderUsername,
                     IsDraw = tournament.IsDraw

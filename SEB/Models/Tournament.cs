@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using SEB.Models.Enums;
 
 namespace SEB.Models
 {
@@ -12,35 +13,33 @@ namespace SEB.Models
         public DateTime StartTime { get; set; }
         public List<Guid> ParticipantIds { get; set; } = new List<Guid>();
         public List<Guid> WinnerIds { get; set; } = new List<Guid>();
-        public bool IsActive { get; set; } = true;
+        public TournamentStatus Status { get; set; } = TournamentStatus.NotYetStarted;
         public bool IsDraw { get; set; }
 
-        // default ctor
         public Tournament()
         {
             Id = Guid.NewGuid();
             StartTime = DateTime.UtcNow;
-            IsActive = true;
+            Status = TournamentStatus.NotYetStarted;
         }
 
-        // ctor for already known users
         public Tournament(List<Guid> participantIds)
         {
             Id = Guid.NewGuid();
             StartTime = DateTime.UtcNow;
             ParticipantIds = participantIds;
-            IsActive = true;
+            Status = TournamentStatus.NotYetStarted;
         }
 
-        // ctor for loading from DB
-        public Tournament(Guid id, DateTime startTime, List<Guid> participantIds, List<Guid> winnerIds, bool isActive, bool isDraw)
+        public Tournament(Guid id, DateTime startTime, List<Guid> participantIds, List<Guid> winnerIds, TournamentStatus status, bool isDraw)
         {
             Id = id;
             StartTime = startTime;
             ParticipantIds = participantIds;
             WinnerIds = winnerIds;
-            IsActive = isActive;
+            Status = status;
             IsDraw = isDraw;
         }
     }
+
 }

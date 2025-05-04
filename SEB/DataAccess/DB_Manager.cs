@@ -34,14 +34,14 @@ namespace SEB.DataAccess
                         UserId UUID NOT NULL REFERENCES Users(Id) ON DELETE CASCADE,
                         Type VARCHAR NOT NULL,
                         Count INT NOT NULL,
-                        Duration INTERVAL NOT NULL,
+                        Duration INT NOT NULL,
                         Timestamp TIMESTAMPTZ DEFAULT NOW()
                     );
 
                     CREATE TABLE IF NOT EXISTS Tournaments (
                         Id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
                         StartTime TIMESTAMPTZ DEFAULT NOW(),
-                        IsActive BOOLEAN DEFAULT TRUE,
+                        Status VARCHAR NOT NULL DEFAULT 'NotYetStarted',
                         WinnerId UUID REFERENCES Users(Id),
                         IsDraw BOOLEAN DEFAULT FALSE
                     );

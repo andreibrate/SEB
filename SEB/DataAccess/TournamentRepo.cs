@@ -25,13 +25,13 @@ namespace SEB.DataAccess
 
             using var command = connection.CreateCommand();
             command.CommandText = @"
-                INSERT INTO Tournaments (Id, StartTime, IsActive, IsDraw)
-                VALUES (@Id, @StartTime, @IsActive, @IsDraw);
+                INSERT INTO Tournaments (Id, StartTime, Status, IsDraw)
+                VALUES (@Id, @StartTime, @Status, @IsDraw);
             ";
 
             command.Parameters.AddWithValue("@Id", tournament.Id);
             command.Parameters.AddWithValue("@StartTime", tournament.StartTime);
-            command.Parameters.AddWithValue("@IsActive", tournament.IsActive);
+            command.Parameters.AddWithValue("@Status", tournament.Status.ToString());
             command.Parameters.AddWithValue("@IsDraw", tournament.IsDraw);
 
             command.ExecuteNonQuery();
@@ -57,7 +57,7 @@ namespace SEB.DataAccess
                 {
                     Id = reader.GetGuid(0),
                     StartTime = reader.GetDateTime(1),
-                    IsActive = reader.GetBoolean(2),
+                    Status = Enum.Parse<TournamentStatus>(reader.GetString(2)),
                     IsDraw = reader.GetBoolean(3)
                 };
 
@@ -76,7 +76,7 @@ namespace SEB.DataAccess
 
             using var command = connection.CreateCommand();
             command.CommandText = @"
-                SELECT Id, StartTime, IsActive, IsDraw
+                SELECT Id, StartTime, Status, IsDraw
                 FROM Tournaments;
             ";
 
@@ -87,7 +87,7 @@ namespace SEB.DataAccess
                 {
                     Id = reader.GetGuid(0),
                     StartTime = reader.GetDateTime(1),
-                    IsActive = reader.GetBoolean(2),
+                    Status = Enum.Parse<TournamentStatus>(reader.GetString(2)),
                     IsDraw = reader.GetBoolean(3)
                 };
 
@@ -97,22 +97,25 @@ namespace SEB.DataAccess
             return tournaments;
         }
 
-        public void AddParticipant(Guid tournamentId, Guid userId)
+        public void AddParticipant(Guid tournamentId, Guid userId, Guid exerciseId, int eloChange = 0)
         {
             using var connection = new NpgsqlConnection(_connectionString);
             connection.Open();
 
             using var command = connection.CreateCommand();
             command.CommandText = @"
-                INSERT INTO TournamentParticipants (TournamentId, UserId)
-                VALUES (@TournamentId, @UserId);
+                INSERT INTO TournamentParticipants (TournamentId, UserId, ExerciseId, EloChange)
+                VALUES (@TournamentId, @UserId, @ExerciseId, @EloChange);
             ";
 
             command.Parameters.AddWithValue("@TournamentId", tournamentId);
             command.Parameters.AddWithValue("@UserId", userId);
+            command.Parameters.AddWithValue("@ExerciseId", exerciseId);
+            command.Parameters.AddWithValue("@EloChange", eloChange);
 
             command.ExecuteNonQuery();
         }
+
 
         public List<Guid> GetParticipants(Guid tournamentId)
         {
@@ -147,7 +150,7 @@ namespace SEB.DataAccess
             using var command = connection.CreateCommand();
             command.CommandText = @"
                 UPDATE Tournaments
-                SET IsActive = FALSE,
+                SET Status = 'Ended',
                     IsDraw = @IsDraw
                 WHERE Id = @TournamentId;
             ";
@@ -170,5 +173,23 @@ namespace SEB.DataAccess
                 winnerCommand.ExecuteNonQuery();
             }
         }
+
+        public void UpdateStatus(Guid tournamentId, TournamentStatus status)
+        {
+            using var connection = new NpgsqlConnection(_connectionString);
+            connection.Open();
+
+            using var command = connection.CreateCommand();
+            command.CommandText = @"
+                UPDATE Tournaments
+                SET Status = @Status
+                WHERE Id = @TournamentId;
+            ";
+            command.Parameters.AddWithValue("@Status", status.ToString());
+            command.Parameters.AddWithValue("@TournamentId", tournamentId);
+
+            command.ExecuteNonQuery();
+        }
+
     }
 }
