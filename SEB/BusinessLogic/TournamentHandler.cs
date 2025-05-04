@@ -94,16 +94,23 @@ namespace SEB.BusinessLogic
 
         public User? GetCurrentLeader(List<Guid> participantIds)
         {
-            var users = new List<User>();
+            var userScores = new Dictionary<User, int>();
+
             foreach (var userId in participantIds)
             {
                 var user = _userRepo.GetUserById(userId);
                 if (user != null)
                 {
-                    users.Add(user);
+                    var exercises = _exerciseRepo.GetExercisesByUserId(userId);
+                    int totalPushups = exercises.Sum(e => e.Count);
+                    userScores[user] = totalPushups;
                 }
             }
-            return users.OrderByDescending(u => u.Exercises.Count).FirstOrDefault();
+
+            return userScores
+                .OrderByDescending(p => p.Value) // highest number of pushups
+                .Select(p => p.Key)
+                .FirstOrDefault();
         }
 
         public void AddParticipant(Guid tournamentId, Guid userId, Guid exerciseId)
