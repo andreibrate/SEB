@@ -114,23 +114,21 @@ namespace SEB.Test.BusinessLogic
         public void CreateTournament_Should_Create_Tournament_With_Participants()
         {
             // Arrange
-            var user1Id = Guid.NewGuid();
-            var user2Id = Guid.NewGuid();
-            var participantIds = new List<Guid> { user1Id, user2Id };
+            var userId = Guid.NewGuid();
+            var exerciseId = Guid.NewGuid(); // New required argument
 
             // Act
-            var tournament = _tournamentHandler.CreateTournament(participantIds);
+            var tournament = _tournamentHandler.CreateTournament(exerciseId, userId);
 
             // Assert
             Assert.IsNotNull(tournament);
-            Assert.AreEqual(2, tournament.ParticipantIds.Count);
+            Assert.AreEqual(1, tournament.ParticipantIds.Count);
 
             // Verify CreateTournament in repo was called
             _tournamentRepoMock.Verify(repo => repo.CreateTournament(It.IsAny<Tournament>()), Times.Once);
 
-            // Verify AddParticipant called twice (once per user)
-            _tournamentRepoMock.Verify(repo => repo.AddParticipant(tournament.Id, user1Id), Times.Once);
-            _tournamentRepoMock.Verify(repo => repo.AddParticipant(tournament.Id, user2Id), Times.Once);
+            // Verify AddParticipant called with exerciseId
+            _tournamentRepoMock.Verify(repo => repo.AddParticipant(tournament.Id, userId, exerciseId, It.IsAny<int>()), Times.Once);
         }
 
         [Test]

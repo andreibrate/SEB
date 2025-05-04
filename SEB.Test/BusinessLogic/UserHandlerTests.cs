@@ -110,13 +110,16 @@ namespace SEB.Test.BusinessLogic
         }
 
         [Test]
-        public void GetUserByToken_Should_Throw_When_Invalid()
+        public void GetUserByToken_Should_Return_Null_When_Invalid()
         {
             // Arrange
             _userRepoMock.Setup(r => r.GetUserByToken("bad-token")).Returns((User)null);
 
-            // Act + Assert
-            Assert.Throws<Exception>(() => _userHandler.GetUserByToken("bad-token"));
+            // Act
+            var result = _userHandler.GetUserByToken("bad-token");
+
+            // Assert
+            Assert.IsNull(result);
         }
 
         [Test]
