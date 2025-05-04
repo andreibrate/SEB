@@ -6,6 +6,7 @@ using System.Text.Json;
 using System.Threading.Tasks;
 using SEB.BusinessLogic;
 using SEB.Models;
+using SEB.Models.Enums;
 
 namespace SEB.HTTP.Endpoints
 {
@@ -31,6 +32,16 @@ namespace SEB.HTTP.Endpoints
         }
         private bool HandleGetTournaments(HttpRequest request, HttpResponse response)
         {
+            // finish all tournaments started more than 2 minutes ago
+            var allTournaments = _tournamentHandler.GetAllTournaments();
+            foreach (var t in allTournaments)
+            {
+                if (t.Status == TournamentStatus.Active && t.StartTime.AddMinutes(2) <= DateTime.UtcNow)
+                {
+                    _tournamentHandler.FinishTournament(t.Id);
+                }
+            }
+
             var tournaments = _tournamentHandler.GetAllTournaments();
             var tournamentInfos = new List<object>();
 

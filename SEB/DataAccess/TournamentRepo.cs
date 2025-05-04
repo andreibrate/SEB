@@ -44,7 +44,7 @@ namespace SEB.DataAccess
 
             using var command = connection.CreateCommand();
             command.CommandText = @"
-                SELECT Id, StartTime, IsActive, IsDraw
+                SELECT Id, StartTime, Status, IsDraw
                 FROM Tournaments
                 WHERE Id = @Id;
             ";
@@ -157,21 +157,6 @@ namespace SEB.DataAccess
             command.Parameters.AddWithValue("@IsDraw", isDraw);
             command.Parameters.AddWithValue("@TournamentId", tournamentId);
             command.ExecuteNonQuery();
-
-            // add winners
-            foreach (var winnerId in winnerIds)
-            {
-                using var winnerCommand = connection.CreateCommand();
-                winnerCommand.CommandText = @"
-                    INSERT INTO TournamentWinners (TournamentId, UserId)
-                    VALUES (@TournamentId, @UserId);
-                ";
-
-                winnerCommand.Parameters.AddWithValue("@TournamentId", tournamentId);
-                winnerCommand.Parameters.AddWithValue("@UserId", winnerId);
-
-                winnerCommand.ExecuteNonQuery();
-            }
         }
 
         public void UpdateStatus(Guid tournamentId, TournamentStatus status)
