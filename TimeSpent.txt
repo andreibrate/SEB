@@ -34,10 +34,14 @@
 01.05.	- 0.25h fix "q stops program"
 	- 2.25h debug not finding endpoints (finally fixed)
 	- 0.5h fixing endpoints
-	- 0.1h debugging
+	- 1h debugging
 03.05.	- 4h fixing endpoints, handlers, repos for curl script - mostly user/session
 04.05.	- 4h getting curl script to work - mostly tournament/history/exercises
 	- 0.5h curl scoreboard stuff
+	- 1.5h trying to add tournament end condition + rule for participants (max 120 seconds in total for entries) - failed/scrapped - to be resolved later
+	- 0.5h fixed GetCurrentLeader
+	- 0.5h HistoryEP - max 120s/participant in total
+	- 1h tournament ends after 2 minutes
 
-TOTAL: 41.25h
+TOTAL: 44.75h
 
