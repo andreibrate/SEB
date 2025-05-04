@@ -153,6 +153,8 @@ REM --------------------------------------------------
 echo 13) add entry to history / continues in tournament
 curl -i -X POST http://localhost:10001/history --header "Content-Type: application/json" --header "Authorization: Basic kienboec-sebToken" -d "{\"Name\": \"PushUps\",  \"Count\": 11, \"DurationInSeconds\": 25}"
 echo.
+curl -i -X POST http://localhost:10001/history --header "Content-Type: application/json" --header "Authorization: Basic kienboec-sebToken" -d "{\"Name\": \"Burpees\",  \"Count\": 10, \"DurationInSeconds\": 20}"
+echo.
 echo.
 
 REM --------------------------------------------------
