@@ -44,6 +44,7 @@
 	- 1h tournament ends after 2 minutes
 	- 0.5h modified some tests (not all, some still fail, because the handlers don't throw exceptions anymore)
 	- 1h extra feature: exercise types
+	- 1h extra feature: rank
 
-TOTAL: 46.25h
+TOTAL: 47.25h
 
