@@ -42,6 +42,8 @@
 	- 0.5h fixed GetCurrentLeader
 	- 0.5h HistoryEP - max 120s/participant in total
 	- 1h tournament ends after 2 minutes
+	- 0.5h modified some tests (not all, some still fail, because the handlers don't throw exceptions anymore)
+	- 1h extra feature: exercise types
 
-TOTAL: 44.75h
+TOTAL: 46.25h
 
