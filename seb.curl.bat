@@ -54,7 +54,11 @@ curl -i -X GET http://localhost:10001/users/altenhof --header "Authorization: Ba
 echo.
 curl -i -X PUT http://localhost:10001/users/kienboec --header "Content-Type: application/json" --header "Authorization: Basic kienboec-sebToken" -d "{\"Name\": \"Kienboeck\",  \"Bio\": \"me playin...\", \"Image\": \":-)\"}"
 echo.
+echo "Should return HTTP 200 User updated"
+echo.
 curl -i -X PUT http://localhost:10001/users/altenhof --header "Content-Type: application/json" --header "Authorization: Basic altenhof-sebToken" -d "{\"Name\": \"Altenhofer\", \"Bio\": \"me codin...\",  \"Image\": \":-D\"}"
+echo.
+echo "Should return HTTP 200 User updated"
 echo.
 curl -i -X GET http://localhost:10001/users/kienboec --header "Authorization: Basic kienboec-sebToken"
 echo.
