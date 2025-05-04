@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 using SEB.HTTP.Endpoints;
 using SEB.Models.Enums;
@@ -12,8 +13,12 @@ namespace SEB.Models
     {
         public Guid Id { get; set; }
         public Guid UserId { get; set; }
+
+        [JsonPropertyName("Name")] // so that "Type" appears in curl script as "Name"
         public ExerciseTypes Type { get; set; }
         public int Count { get; set; }
+
+        [JsonPropertyName("DurationInSeconds")]
         public int Duration { get; set; } // seconds
 
         public Exercise()
