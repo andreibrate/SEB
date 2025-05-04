@@ -8,8 +8,7 @@ namespace SEB.Models.Enums
 {
     public enum ExerciseTypes
     {
-        PushUps,
-        Squats,
+        PushUps = 1,
         Burpees
     }
 }

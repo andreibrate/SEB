@@ -7,6 +7,7 @@ using SEB.DataAccess.Interfaces;
 using SEB.Models;
 using SEB.Models.Enums;
 
+
 namespace SEB.BusinessLogic
 {
     public class TournamentHandler
@@ -45,8 +46,22 @@ namespace SEB.BusinessLogic
             foreach (var userId in participants)
             {
                 var exercises = _exerciseRepo.GetExercisesByUserId(userId);
-                int totalExercises = exercises.Sum(e => e.Count);
-                exerciseResults[userId] = totalExercises;
+                int totalPoints = 0;
+
+                foreach (var e in exercises)
+                {
+                    if (e.Duration <= 120)
+                    {
+                        int multiplier = e.Type switch
+                        {
+                            ExerciseTypes.PushUps => 1,
+                            ExerciseTypes.Burpees => 2,
+                            _ => 0
+                        };
+                        totalPoints += e.Count * multiplier;
+                    }
+                }
+                exerciseResults[userId] = totalPoints;
             }
 
             int maxExercises = exerciseResults.Values.Max();
