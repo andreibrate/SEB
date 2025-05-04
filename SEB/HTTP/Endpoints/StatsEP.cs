@@ -49,8 +49,8 @@ namespace SEB.HTTP.Endpoints
             }
 
             // Calculate total push-ups (1 exercise = 1 pushup currently)
-            var exercises = user.Exercises ?? new List<Exercise>();
-            int totalExercises = exercises.Count;
+            var exercises = _exerciseHandler.GetExercisesByUserId(user.Id);
+            int totalExercises = exercises.Sum(e => e.Count);
 
             var statsResult = new
             {
