@@ -20,6 +20,7 @@ namespace SEB.Models
 
         [JsonPropertyName("DurationInSeconds")]
         public int Duration { get; set; } // seconds
+        public DateTime Timestamp { get; set; } = DateTime.UtcNow;
 
         public Exercise()
         {

@@ -120,8 +120,6 @@ namespace SEB.HTTP.Endpoints
                 exercise.Id = Guid.NewGuid();
                 exercise.UserId = user.Id;
 
-                _exerciseHandler.AddExercise(exercise);
-
                 var tournaments = _tournamentHandler.GetAllTournaments();
                 // existing = NotYetStarted or Active
                 var existingTournament = tournaments.FirstOrDefault(t => t.Status == TournamentStatus.NotYetStarted || t.Status == TournamentStatus.Active);
@@ -130,6 +128,23 @@ namespace SEB.HTTP.Endpoints
                 if (existingTournament != null)
                 {
                     var participants = _tournamentHandler.GetParticipants(existingTournament.Id);
+
+                    var userExercises = _exerciseHandler.GetExercisesByUserId(user.Id);
+
+                    // only exercises that belong to the current tournament
+                    int totalDuration = userExercises
+                        .Where(e => e.Timestamp >= existingTournament.StartTime &&
+                                    e.Timestamp <= existingTournament.StartTime.AddMinutes(2))
+                        .Sum(e => e.Duration);
+
+                    if (totalDuration + exercise.Duration > 120)
+                    {
+                        response.ResponseCode = 400;
+                        response.ResponseMessage = "Bad Request - Exercise exceeds 120s duration limit for this tournament";
+                        return true;
+                    }
+
+                    _exerciseHandler.AddExercise(exercise);
 
                     if (!participants.Contains(user.Id))
                     {
@@ -152,6 +167,7 @@ namespace SEB.HTTP.Endpoints
                 }
                 else
                 {
+                    _exerciseHandler.AddExercise(exercise);
                     // no tournament exists yet => create a new one and add user
                     var newTournament = _tournamentHandler.CreateTournament(user.Id, exercise.Id);
 
