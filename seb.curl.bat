@@ -114,6 +114,9 @@ curl -i -X POST http://localhost:10001/history --header "Content-Type: applicati
 echo.
 curl -i -X POST http://localhost:10001/history --header "Content-Type: application/json" --header "Authorization: Basic altenhof-sebToken" -d "{\"Name\": \"PushUps\",  \"Count\": 50, \"DurationInSeconds\": 70}"
 echo.
+REM echo should fail:
+REM curl -i -X POST http://localhost:10001/history --header "Content-Type: application/json" --header "Authorization: Basic altenhof-sebToken" -d "{\"Name\": \"PushUps\",  \"Count\": 50, \"DurationInSeconds\": 70}"
+echo.
 echo.
 
 REM --------------------------------------------------
