@@ -4,6 +4,7 @@ using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
+using SEB.Models.Enums;
 
 namespace SEB.Models
 {
@@ -52,5 +53,19 @@ namespace SEB.Models
         public int Elo { get; set; }
         public List<Exercise> Exercises { get; set; } // history
         public string? Token { get; set; }  = string.Empty;
+        public Rank Rank => CalculateRank(); // always derived from Elo
+
+        private Rank CalculateRank()
+        {
+            if (Elo < 100)
+                return Rank.Loser;
+            else if (Elo == 100)
+                return Rank.Newbie;
+            else if (Elo <= 105)
+                return Rank.Advanced;
+            else
+                return Rank.Master;
+        }
+
     }
 }

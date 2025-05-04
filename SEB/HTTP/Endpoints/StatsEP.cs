@@ -55,7 +55,8 @@ namespace SEB.HTTP.Endpoints
             var statsResult = new
             {
                 Elo = user.Elo,
-                TotalExercises = totalExercises
+                TotalExercises = totalExercises,
+                Rank = user.Rank.ToString()
             };
 
             response.Body = JsonSerializer.Serialize(statsResult);

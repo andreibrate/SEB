@@ -42,7 +42,8 @@ namespace SEB.HTTP.Endpoints
                 {
                     Username = user.Username,
                     Elo = user.Elo,
-                    TotalExercises = total
+                    TotalExercises = total,
+                    Rank = user.Rank.ToString()
                 });
             }
 
