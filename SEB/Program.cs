@@ -45,8 +45,8 @@ namespace SEB
                 server.RegisterEndpoint("users", new UserEP(userHandler));                                                  // register
                 server.RegisterEndpoint("sessions", new SessionEP(userHandler));                                            // login
                 server.RegisterEndpoint("stats", new StatsEP(userHandler, exerciseHandler));                                // stats
-                server.RegisterEndpoint("score", new ScoreEP(userHandler));                                                 // scoreboard
-                server.RegisterEndpoint("history", new HistoryEP(exerciseHandler, userHandler));                            // history
+                server.RegisterEndpoint("score", new ScoreEP(userHandler, exerciseHandler));                                                 // scoreboard
+                server.RegisterEndpoint("history", new HistoryEP(exerciseHandler, userHandler, tournamentHandler));                            // history
                 server.RegisterEndpoint("tournament", new TournamentEP(tournamentHandler, userHandler, exerciseHandler));   // tournament
 
                 // start server
